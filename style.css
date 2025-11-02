@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #005f73;
+  --secondary-color: #0a9396;
+  --background-color: #ffffff;
+  --text-color: var(--primary-dark, #333);
+  --accent-color: #ee9b00;
+  --border-radius: 8px;
+  --spacing-unit: 1rem;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color, #f4f4f4);
+  color: var(--text-color);
+  margin: 0;
+  padding: var(--spacing-unit);
+  line-height: 1.6;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+  padding: calc(var(--spacing-unit) * 1.5);
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+  color: var(--primary-color);
+  text-wrap: balance;
+}
+
+header {
+  background: var(--primary-color);
+  padding: var(--spacing-unit) 0;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+
+    li a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5em 1em;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+footer {
+  text-align: center;
+  margin-top: calc(var(--spacing-unit) * 2);
+  font-size: 0.9rem;
+  color: var(--primary-color);
+}
+
+#skills ol {
+  list-style: none;
+  padding: 0;
+  width: 80%;
+}
+
+@keyframes draw-line {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+#experience svg .timeline-line {
+  stroke-dasharray: 1000;
+  animation: draw-line 2s ease-out forwards;
+}
+
+form {
+  background-color: color-mix(in srgb, var(--background-color) 80%, white);
+  padding: var(--spacing-unit);
+  border-radius: var(--border-radius);
+}
+
+form fieldset {
+  border: 1px solid var(--secondary-color);
+}
+
+form button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.75em 1.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--primary-color);
+  }
+}
+
+label:has(+ input:required:invalid) {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+@scope (#experiment-canvas) {
+  :scope {
+    border: 2px dashed var(--accent-color) !important;
+    box-shadow: 0 0 10px var(--accent-color);
+  }
+}
+
+/* Projects Page - Grid Layout */
+#projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: calc(var(--spacing-unit) * 1.5);
+  text-align: left; /* Override centered text from main */
+}
+
+#projects article {
+  border: 1px solid color-mix(in srgb, var(--secondary-color) 20%, transparent);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-unit);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: scroll;
+}
+
+#projects article:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: calc(var(--spacing-unit) / 2);
+  }
+
+  header nav ul {
+    flex-direction: column;
+    align-items: center;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  main {
+    padding: var(--spacing-unit);
+  }
+
+  #skills ol {
+    width: 100%;
+  }
+
+  form label, form input, form textarea, form button {
+    width: 95%;
+  }
+
+  #projects {
+    grid-template-columns: 1fr; /* Stack projects on small screens */
+  }
+}
+
+/* Center content on home and contact pages using :has() to avoid adding classes */
+main:has(#about-me),
+main:has(#resume-section) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
