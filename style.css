@@ -3,16 +3,32 @@
 :root {
   --primary-color: #552834;
   --secondary-color: #4a2855;
-  --background-color: #F7F4F4;
-  --text-color: var(--primary-dark, #333);
   --accent-color: #654666;
+  --background-color: #f7f4f4;
+  --surface-color: #ffffff;
+  --text-color: #2c2c2c;
+  --muted-text-color: #6a5e63;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.1);
   --border-radius: 8px;
   --spacing-unit: 1rem;
 }
 
+:root[data-theme="dark"] {
+  --primary-color: #8f6cd4;
+  --secondary-color: #684756;
+  --accent-color: #8f6cd4;
+  --background-color: #14121a;
+  --surface-color: #1a1423c5;
+  --text-color: #f8f7ff;
+  --muted-text-color: #AB8476;
+  --border-color: rgb(255, 255, 255);
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: var(--background-color, #f4f4f4);
+  background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;
   padding: var(--spacing-unit);
@@ -25,12 +41,14 @@ body {
 main {
   flex-grow: 1;
   padding: calc(var(--spacing-unit) * 1.5);
-  background: var(--background-color);
+  background: var(--surface-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px var(--shadow-color);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--primary-color);
   text-wrap: balance;
   text-align: center;
@@ -39,35 +57,93 @@ h1, h2, h3 {
 header {
   background: var(--primary-color);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
-  padding: 0 var(--spacing-unit);
+  padding: 0 calc(var(--spacing-unit) * 2) 0 var(--spacing-unit);
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   min-height: 60px;
   position: sticky;
   top: 0;
   z-index: 100;
+}
 
-  nav ul {
-    list-style: none;
-    display: flex;
-    
-    padding: 0;
+header nav ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  gap: 0.5em;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  display: inline-block;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+header nav ul li a:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+.theme-toggle {
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  margin-left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  position: absolute;
+  right: var(--spacing-unit);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.theme-toggle__icon {
+  font-size: 1rem;
+}
+
+.theme-toggle:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-color: transparent;
+}
+
+.js-only {
+  display: none;
+}
+
+body.js-enabled .js-only {
+  display: inline-flex;
+}
+
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    padding: calc(var(--spacing-unit) * 1.5);
+  }
+
+  header nav {
     margin: 0;
-    gap: 0.5em;
+  }
 
-    li a {
-      color: white;
-      text-decoration: none;
-      padding: 0.5em 1em;
-      border-radius: 4px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-
-      &:hover {
-        background-color: var(--secondary-color);
-        transform: translateY(-2px);
-      }
-    }
+  .theme-toggle {
+    position: static;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
   }
 }
 
@@ -75,7 +151,7 @@ footer {
   text-align: center;
   margin-top: calc(var(--spacing-unit) * 2);
   font-size: 0.9rem;
-  color: var(--primary-color);
+  color: var(--muted-text-color);
 }
 
 #skills ol {
@@ -94,12 +170,17 @@ footer {
 
 #skills progress {
   width: 100%;
-  max-width: 400px; /* Or another max-width you prefer */
+  max-width: 400px;
 }
 
 @keyframes draw-line {
-  from { stroke-dashoffset: 1000; }
-  to { stroke-dashoffset: 0; }
+  from {
+    stroke-dashoffset: 1000;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 #experience svg .timeline-line {
@@ -111,20 +192,21 @@ footer {
   display: flex;
   gap: 1rem;
   font-size: 1.5rem;
+}
 
-  a {
-    color: var(--primary-color);
-    transition: color 0.3s;
+.socials a {
+  color: var(--primary-color);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
 
-    &:hover {
-      color: var(--secondary-color);
-    }
-  }
+.socials a:hover {
+  color: var(--secondary-color);
+  transform: scale(1.1);
 }
 
 .form-group {
   margin-bottom: 1rem;
-  display: flexbox;
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
@@ -134,7 +216,7 @@ footer {
   margin-bottom: 0.25rem;
 }
 
-.form-group label::after{
+.form-group label::after {
   content: " *";
   color: #b00020
 }
@@ -144,9 +226,11 @@ footer {
   width: 100%;
   padding: 0.5rem 0.6rem;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   font: inherit;
   box-sizing: border-box;
+  background-color: var(--surface-color);
+  color: var(--text-color);
 }
 
 .form-group input:required:placeholder-shown,
@@ -172,14 +256,14 @@ footer {
 }
 
 form {
-  background-color: color-mix(in srgb, var(--background-color) 80%, white);
+  background-color: color-mix(in srgb, var(--surface-color) 80%, white);
   padding: var(--spacing-unit);
   border-radius: var(--border-radius);
   text-align: left;
 }
 
 form fieldset {
-  border: 1px solid var(--secondary-color);
+  border: 1px solid var(--border-color);
 }
 
 form button {
@@ -189,27 +273,69 @@ form button {
   padding: 0.75em 1.5em;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  display: inline-block;
+  transition: background-color 0.3s, transform 0.2s ease;
+}
 
-  &:hover {
-    background-color: var(--primary-color);
+form button:hover {
+  background-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.noscript-message {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted-text-color);
+}
+
+@keyframes flash-bg {
+  from {
+    background-color: #ffecec;
+  }
+
+  to {
+    background-color: #ffffff;
   }
 }
 
+.flash {
+  animation: flash-bg 0.2s ease-out 0s 2 alternate;
+}
+
+#chars-remaining {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+#error-output {
+  color: #b00020;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+#chars-remaining.under-limit {
+  color: #b58900;
+}
+
+#chars-remaining.near-limit {
+  color: #b00020;
+  font-weight: 700;
+}
 
 
 #projects {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: calc(var(--spacing-unit) * 1.5);
-  text-align: left; /* Override centered text from main */
+  text-align: left;
 }
 
 #projects article {
   border: 1px solid color-mix(in srgb, var(--secondary-color) 20%, transparent);
   border-radius: var(--border-radius);
   padding: var(--spacing-unit);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: auto;
   max-height: 50vh;
@@ -217,18 +343,20 @@ form button {
 
 #projects article:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 #projects h3 {
   text-align: center;
 }
+
 .github-link {
   display: block;
   text-align: center;
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: inherit;
 }
 
 .github-link .fa-github {
@@ -294,7 +422,10 @@ form button {
     padding: var(--spacing-unit);
   }
 
-  form label, form input, form textarea, form button {
+  form label,
+  form input,
+  form textarea,
+  form button {
     width: 95%;
   }
 
@@ -303,9 +434,11 @@ form button {
     margin-left: 2rem;
     margin-right: 2rem;
   }
+
   .table-wrapper {
     height: 350px;
   }
+
   .instruction-set-table {
     transform: scale(0.6);
     transform-origin: 0 0;
@@ -318,4 +451,125 @@ main:has(form) {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+/* --- View Transition root animation (SPA-style) --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#projects .project-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+#projects .project-card h3 {
+  cursor: pointer;
+}
+
+#projects .project-card.is-active {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+#projects .project-card.is-dimmed {
+  opacity: 0.35;
+  filter: blur(1px);
+}
+
+/* --- Modal for project details --- */
+body.has-modal {
+  overflow: hidden;
+}
+
+.project-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+
+.project-modal__body img {
+  display: block;
+  margin: 0.5rem auto;
+  max-width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+
+.project-modal[hidden] {
+  display: none;
+}
+
+.project-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.project-modal__content {
+  position: relative;
+  max-width: min(900px, 90vw);
+  max-height: 85vh;
+  padding: var(--spacing-unit);
+  border-radius: var(--border-radius);
+  background: var(--background-color, #fff);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  overflow: auto;
+}
+
+.project-modal__body {
+  margin-top: 1.5rem;
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  border: none;
+  background: transparent;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* Optional: make project cards visibly clickable */
+#projects article {
+  cursor: pointer;
+}
+
+#projects article a {
+  cursor: pointer;
 }

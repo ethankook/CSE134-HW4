@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,19 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
+        <button
+            type="button"
+            class="theme-toggle js-only"
+            data-theme-toggle
+            aria-pressed="false">
+            <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+            <span class="theme-toggle__label">Dark mode</span>
+        </button>
     </header>
+
+    <noscript>
+        <p class="noscript-message">Theme switching is unavailable because JavaScript is disabled.</p>
+    </noscript>
 
     <main>
         <picture>
@@ -58,6 +70,7 @@
         Built with HTML only<noscript>  (JavaScript disabled)</noscript></p>
     </footer>
 
+    <script src="theme-toggle.js" defer></script>
     <script>
         console.log("Analytics placeholder loaded");
     </script>
